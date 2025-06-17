@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard - Beautiful Weather App</title>
+    <meta name="description" content="A beautiful weather dashboard that displays current weather conditions, forecasts, and detailed meteorological information with stunning visuals.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app" class="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 transition-all duration-1000">
+        <div class="min-h-screen backdrop-blur-sm bg-black/10">
+            <div class="container mx-auto px-4 py-8">
+                <!-- Header -->
+                <div class="text-center mb-8">
+                    <h1 class="text-4xl md:text-6xl font-bold text-white mb-2 drop-shadow-lg">
+                        Weather Dashboard
+                    </h1>
+                    <p class="text-white/80 text-lg">Beautiful weather, beautifully displayed</p>
+                </div>
+
+                <!-- Search Bar -->
+                <form id="searchForm" class="max-w-md mx-auto mb-8">
+                    <div class="relative">
+                        <input
+                            type="text"
+                            id="locationInput"
+                            placeholder="Enter city name..."
+                            class="w-full px-4 py-3 pl-12 pr-16 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300"
+                        />
+                        <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/70 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <button
+                            type="submit"
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 rounded-xl p-2 transition-all duration-300"
+                        >
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="flex justify-center mb-8">
+                    <button
+                        id="locationBtn"
+                        class="flex items-center gap-2 px-6 py-3 bg-white/20 hover:bg-white/30 backdrop-blur-md rounded-2xl text-white transition-all duration-300 border border-white/30"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        Use Current Location
+                    </button>
+                </div>
+
+                <!-- Error Message -->
+                <div id="errorMessage" class="max-w-md mx-auto mb-8 p-4 bg-red-500/20 backdrop-blur-md border border-red-400/30 rounded-2xl text-white text-center hidden">
+                </div>
+
+                <!-- Loading Spinner -->
+                <div id="loadingSpinner" class="text-center mb-8 hidden">
+                    <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-white/30 border-t-white"></div>
+                    <p class="text-white/80 mt-4">Loading weather data...</p>
+                </div>
+
+                <!-- Weather Content -->
+                <div id="weatherContent" class="max-w-6xl mx-auto hidden">
+                    <!-- Main Weather Card -->
+                    <div class="bg-white/20 backdrop-blur-lg rounded-3xl p-8 mb-8 border border-white/30 shadow-2xl">
+                        <div class="text-center mb-6">
+                            <div class="flex items-center justify-center gap-3 mb-4">
+                                <svg class="w-6 h-6 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <h2 id="locationName" class="text-2xl font-semibold text-white"></h2>
+                            </div>
+                            
+                            <div class="flex items-center justify-center gap-6 mb-6">
+                                <div class="bg-white/20 p-4 rounded-2xl">
+                                    <div id="weatherIcon" class="w-16 h-16 flex items-center justify-center"></div>
+                                </div>
+                                <div>
+                                    <div id="temperature" class="text-6xl md:text-8xl font-bold text-white mb-2"></div>
+                                    <div id="description" class="text-white/80 text-xl capitalize"></div>
+                                </div>
+                            </div>
+                            
+                            <div id="feelsLike" class="text-white/70 text-lg"></div>
+                        </div>
+
+                        <!-- Weather Details Grid -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="bg-white/10 rounded-2xl p-4 text-center border border-white/20">
+                                <svg class="w-8 h-8 text-white/80 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"></path>
+                                    <path d="M9.6 4.6A2 2 0 1 1 11 8H2"></path>
+                                    <path d="M12.6 19.4A2 2 0 1 0 14 16H2"></path>
+                                </svg>
+                                <div id="windSpeed" class="text-white text-lg font-semibold"></div>
+                                <div class="text-white/70 text-sm">Wind Speed</div>
+                            </div>
+                            
+                            <div class="bg-white/10 rounded-2xl p-4 text-center border border-white/20">
+                                <svg class="w-8 h-8 text-white/80 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M2 12c0-2.38 2.5-4.65 6.74-4.65a33.57 33.57 0 0 1 2.24 0 33.57 33.57 0 0 1 2.24 0C17.5 7.35 20 9.62 20 12c0 2.38-2.5 4.65-6.74 4.65a33.57 33.57 0 0 1-2.24 0 33.57 33.57 0 0 1-2.24 0C4.5 16.65 2 14.38 2 12z"></path>
+                                    <path d="M12 12v.01"></path>
+                                </svg>
+                                <div id="humidity" class="text-white text-lg font-semibold"></div>
+                                <div class="text-white/70 text-sm">Humidity</div>
+                            </div>
+                            
+                            <div class="bg-white/10 rounded-2xl p-4 text-center border border-white/20">
+                                <svg class="w-8 h-8 text-white/80 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <div id="visibility" class="text-white text-lg font-semibold"></div>
+                                <div class="text-white/70 text-sm">Visibility</div>
+                            </div>
+                            
+                            <div class="bg-white/10 rounded-2xl p-4 text-center border border-white/20">
+                                <svg class="w-8 h-8 text-white/80 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"></path>
+                                    <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>
+                                    <path d="M12 2v2"></path>
+                                    <path d="M12 20v2"></path>
+                                    <path d="m4.93 4.93 1.41 1.41"></path>
+                                    <path d="m17.66 17.66 1.41 1.41"></path>
+                                    <path d="M2 12h2"></path>
+                                    <path d="M20 12h2"></path>
+                                    <path d="m6.34 17.66-1.41 1.41"></path>
+                                    <path d="m19.07 4.93-1.41 1.41"></path>
+                                </svg>
+                                <div id="pressure" class="text-white text-lg font-semibold"></div>
+                                <div class="text-white/70 text-sm">Pressure</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5-Day Forecast -->
+                    <div id="forecastSection" class="bg-white/20 backdrop-blur-lg rounded-3xl p-8 border border-white/30 shadow-2xl">
+                        <h3 class="text-2xl font-bold text-white mb-6 text-center">5-Day Forecast</h3>
+                        <div id="forecastGrid" class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                            <!-- Forecast items will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Welcome Message -->
+                <div id="welcomeMessage" class="text-center text-white/80">
+                    <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path>
+                    </svg>
+                    <p class="text-xl">Welcome to Weather Dashboard</p>
+                    <p class="text-white/60">Search for a city or use your current location to get started</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
