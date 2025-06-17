@@ -1,4 +1,4 @@
-# 🌦️ Weather Application
+# 🌦️ Weather Application # prodigy info tech
 
 A simple and responsive weather app built using **HTML**, **CSS**, and **JavaScript** that fetches real-time weather data using the OpenWeatherMap API.
 
@@ -18,12 +18,7 @@ A simple and responsive weather app built using **HTML**, **CSS**, and **JavaScr
 - HTML5  
 - CSS3  
 - JavaScript (Fetch API)  
-- [OpenWeatherMap API](https://openweathermap.org/api)
+- [OpenWeatherMap API](https://n-tejaswini6.github.io/Weather-Application-/)
 
 ---
 
-## 🚀 How to Run
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/N-tejaswini6/Weather-Application-.git
